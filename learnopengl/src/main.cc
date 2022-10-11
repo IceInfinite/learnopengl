@@ -87,7 +87,6 @@ int main()
 		texture0.Bind();
 		shader.SetUniform1i("u_texture0", 0);
 
-
 		// texture composition，use another texture unit, each machine has it's number of texture unit
 		// Texture texture1("res/pictures/stackunderflow.png");
 		// texture1.Bind(1);
@@ -123,7 +122,7 @@ int main()
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
-			 
+
 			{
 				shader.Bind();
 				glm::mat4 model = glm::translate(glm::mat4(1.0f), translation_a);
