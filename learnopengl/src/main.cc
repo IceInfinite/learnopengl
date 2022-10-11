@@ -19,31 +19,31 @@
 
 int main() {
   GLFWwindow* window;
+
+  /* Initialize the library */
+  if (!glfwInit())
+    return -1;
+
+  // GL 3.3 + GLSL 330
+  const char* glsl_version = "#version 330";
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+  /* Create a windowed mode window and its OpenGL context */
+  window = glfwCreateWindow(960, 540, "Hello World", NULL, NULL);
+  if (!window)
+    return -1;
+
+  /* Make the window's context current */
+  glfwMakeContextCurrent(window);
+  glfwSwapInterval(1);  // Enable vsync
+
+  if (glewInit() != GLEW_OK)
+    std::cout << "Glew init error!" << std::endl;
+
+  std::cout << glGetString(GL_VERSION) << std::endl;
   {
-    /* Initialize the library */
-    if (!glfwInit())
-      return -1;
-
-    // GL 3.3 + GLSL 330
-    const char* glsl_version = "#version 330";
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(960, 540, "Hello World", NULL, NULL);
-    if (!window)
-      return -1;
-
-    /* Make the window's context current */
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(1);  // Enable vsync
-
-    if (glewInit() != GLEW_OK)
-      std::cout << "Glew init error!" << std::endl;
-
-    std::cout << glGetString(GL_VERSION) << std::endl;
-
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -55,10 +55,12 @@ int main() {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
+    Renderer renderer;
     test::ClearColorTest clear_color_test;
-    clear_color_test.OnUpdate(0.0f);
 
     while (!glfwWindowShouldClose(window)) {
+      renderer.Clear();
+      clear_color_test.OnUpdate(0.0f);
       clear_color_test.OnRender();
 
       // Start the Dear ImGui frame
