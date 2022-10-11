@@ -60,6 +60,9 @@
     <ClCompile Include="src\third_party\imgui\imgui_impl_glfw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\test\clear_color_test.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\basic.shader" />
@@ -777,6 +780,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\third_party\imgui\imgui_impl_glfw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\test\test.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\test\clear_color_test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

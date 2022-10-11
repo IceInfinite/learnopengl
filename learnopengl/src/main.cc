@@ -1,174 +1,173 @@
-#include "renderer.h"
-#include "vertex_buffer.h"
-#include "index_buffer.h"
-#include "vertex_array.h"
-#include "vertex_buffer_layout.h"
-#include "shader.h"
-#include "texture.h"
-
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 #include <iostream>
 
-int main()
-{
-	GLFWwindow* window;
-	{
-		/* Initialize the library */
-		if (!glfwInit())
-			return -1;
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
+#include "index_buffer.h"
+#include "renderer.h"
+#include "shader.h"
+#include "texture.h"
+#include "vertex_array.h"
+#include "vertex_buffer.h"
+#include "vertex_buffer_layout.h"
 
-		// GL 3.3 + GLSL 330
-		const char* glsl_version = "#version 330";
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+int main() {
+  GLFWwindow* window;
+  {
+    /* Initialize the library */
+    if (!glfwInit())
+      return -1;
 
-		/* Create a windowed mode window and its OpenGL context */
-		window = glfwCreateWindow(960, 540, "Hello World", NULL, NULL);
-		if (!window)
-			return -1;
+    // GL 3.3 + GLSL 330
+    const char* glsl_version = "#version 330";
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-		/* Make the window's context current */
-		glfwMakeContextCurrent(window);
-		glfwSwapInterval(1); // Enable vsync
+    /* Create a windowed mode window and its OpenGL context */
+    window = glfwCreateWindow(960, 540, "Hello World", NULL, NULL);
+    if (!window)
+      return -1;
 
-		if (glewInit() != GLEW_OK)
-			std::cout << "Glew init error!" << std::endl;
+    /* Make the window's context current */
+    glfwMakeContextCurrent(window);
+    glfwSwapInterval(1);  // Enable vsync
 
-		std::cout << glGetString(GL_VERSION) << std::endl;
+    if (glewInit() != GLEW_OK)
+      std::cout << "Glew init error!" << std::endl;
 
-		float positions[] = {
-			-50.0f, -50.0f, 0.0f, 0.0f, // 0
-			 50.0f, -50.0f, 1.0f, 0.0f, // 1
-			 50.0f,  50.0f, 1.0f, 1.0f, // 2
-			-50.0f,  50.0f, 0.0f, 1.0f  // 3
-		};
+    std::cout << glGetString(GL_VERSION) << std::endl;
 
-		unsigned int indices[] = {
-			0, 1, 2,
-			2, 3, 0
-		};
+    float positions[] = {
+        -50.0f, -50.0f, 0.0f, 0.0f,  // 0
+        50.0f,  -50.0f, 1.0f, 0.0f,  // 1
+        50.0f,  50.0f,  1.0f, 1.0f,  // 2
+        -50.0f, 50.0f,  0.0f, 1.0f   // 3
+    };
 
-		GLCall(glEnable(GL_BLEND));
-		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+    unsigned int indices[] = {0, 1, 2, 2, 3, 0};
 
-		VertexArray va;
-		VertexBuffer vb(positions, 4 * 4 * sizeof(float));
-		IndexBuffer ib(indices, 6);
+    GLCall(glEnable(GL_BLEND));
+    GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-		VertexBufferLayout layout;
-		layout.Push<float>(2);
-		layout.Push<float>(2);
-		va.AddLayout(vb, layout);
+    VertexArray va;
+    VertexBuffer vb(positions, 4 * 4 * sizeof(float));
+    IndexBuffer ib(indices, 6);
 
-		// Working Directory($(ProjectDir))
-		Shader shader("res/shaders/basic.shader");
-		shader.Bind();
-		// std::cout << "Vertex" << std::endl;
-		// std::cout << shader.GetSource().vertex_shader << std::endl;
-		// std::cout << "Fragment" << std::endl;
-		// std::cout << shader.GetSource().fragment_shader << std::endl;
+    VertexBufferLayout layout;
+    layout.Push<float>(2);
+    layout.Push<float>(2);
+    va.AddLayout(vb, layout);
 
-		glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
-		glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+    // Working Directory($(ProjectDir))
+    Shader shader("res/shaders/basic.shader");
+    shader.Bind();
+    // std::cout << "Vertex" << std::endl;
+    // std::cout << shader.GetSource().vertex_shader << std::endl;
+    // std::cout << "Fragment" << std::endl;
+    // std::cout << shader.GetSource().fragment_shader << std::endl;
 
-		//"res/pictures/ChernoLogo.png"
-		//"res/pictures/stackunderflow.png"
-		Texture texture0("res/pictures/ChernoLogo.png");
-		texture0.Bind();
-		shader.SetUniform1i("u_texture0", 0);
+    glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
+    glm::mat4 view =
+        glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
-		// texture composition，use another texture unit, each machine has it's number of texture unit
-		// Texture texture1("res/pictures/stackunderflow.png");
-		// texture1.Bind(1);
-		// shader.SetUniform1i("u_texture1", 1);
+    //"res/pictures/ChernoLogo.png"
+    //"res/pictures/stackunderflow.png"
+    Texture texture0("res/pictures/ChernoLogo.png");
+    texture0.Bind();
+    shader.SetUniform1i("u_texture0", 0);
 
-		shader.Unbind();
-		va.Unbind();
-		vb.Unbind();
-		ib.Unbind();
+    // texture composition，use another texture unit, each machine has it's
+    // number of texture unit Texture
+    // texture1("res/pictures/stackunderflow.png"); texture1.Bind(1);
+    // shader.SetUniform1i("u_texture1", 1);
 
-		Renderer renderer;
+    shader.Unbind();
+    va.Unbind();
+    vb.Unbind();
+    ib.Unbind();
 
-		// Setup Dear ImGui context
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
+    Renderer renderer;
 
-		// Setup Dear ImGui style
-		ImGui::StyleColorsDark();
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
 
-		// Setup Platform/Renderer backends
-		ImGui_ImplGlfw_InitForOpenGL(window, true);
-		ImGui_ImplOpenGL3_Init(glsl_version);
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
 
-		float increment = -0.05f;
-		glm::vec3 translation_a(100.0f, 100.0f, 0.0f);
-		glm::vec3 translation_b(200.0f, 200.0f, 0.0f);
-		while (!glfwWindowShouldClose(window))
-		{
-			// Render here
-			renderer.Clear();
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init(glsl_version);
 
-			// Start the Dear ImGui frame
-			ImGui_ImplOpenGL3_NewFrame();
-			ImGui_ImplGlfw_NewFrame();
-			ImGui::NewFrame();
+    float increment = -0.05f;
+    glm::vec3 translation_a(100.0f, 100.0f, 0.0f);
+    glm::vec3 translation_b(200.0f, 200.0f, 0.0f);
+    while (!glfwWindowShouldClose(window)) {
+      // Render here
+      renderer.Clear();
 
-			{
-				shader.Bind();
-				glm::mat4 model = glm::translate(glm::mat4(1.0f), translation_a);
-				glm::mat4 mvp = proj * view * model;
-				shader.SetUniformMat4("u_mvp", mvp);
-				renderer.Draw(va, ib, shader);
-			}
+      // Start the Dear ImGui frame
+      ImGui_ImplOpenGL3_NewFrame();
+      ImGui_ImplGlfw_NewFrame();
+      ImGui::NewFrame();
 
-			{
-				shader.Bind();
-				glm::mat4 model = glm::translate(glm::mat4(1.0f), translation_b);
-				glm::mat4 mvp = proj * view * model;
-				shader.SetUniformMat4("u_mvp", mvp);
-				renderer.Draw(va, ib, shader);
-			}
+      {
+        shader.Bind();
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), translation_a);
+        glm::mat4 mvp = proj * view * model;
+        shader.SetUniformMat4("u_mvp", mvp);
+        renderer.Draw(va, ib, shader);
+      }
 
-			// Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
-			{
-				ImGui::Begin("Hello, world!");   // Create a window called "Hello, world!" and append into it.
+      {
+        shader.Bind();
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), translation_b);
+        glm::mat4 mvp = proj * view * model;
+        shader.SetUniformMat4("u_mvp", mvp);
+        renderer.Draw(va, ib, shader);
+      }
 
-				ImGui::SliderFloat3("TranslationA", &translation_a.x, 0.0f, 960.0f);
-				ImGui::SliderFloat3("TranslationB", &translation_b.x, 0.0f, 960.0f);
-				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+      // Show a simple window that we create ourselves. We use a Begin/End pair
+      // to created a named window.
+      {
+        ImGui::Begin("Hello, world!");  // Create a window called "Hello,
+                                        // world!" and append into it.
 
-				ImGui::End();
-			}
+        ImGui::SliderFloat3("TranslationA", &translation_a.x, 0.0f, 960.0f);
+        ImGui::SliderFloat3("TranslationB", &translation_b.x, 0.0f, 960.0f);
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
+                    1000.0f / ImGui::GetIO().Framerate,
+                    ImGui::GetIO().Framerate);
 
-			// Rendering
-			ImGui::Render();
-			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        ImGui::End();
+      }
 
-			// Swap fornt and back buffers
-			glfwSwapBuffers(window);
+      // Rendering
+      ImGui::Render();
+      ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-			// Poll for and process events
-			glfwPollEvents();
-		}
+      // Swap fornt and back buffers
+      glfwSwapBuffers(window);
 
-	} // Ensure class destruction before context is deleted, avoid getting error by glGetError func
+      // Poll for and process events
+      glfwPollEvents();
+    }
 
-	// Cleanup
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
-	glfwDestroyWindow(window);
+  }  // Ensure class destruction before context is deleted, avoid getting error
+     // by glGetError func
 
-	glfwTerminate();
-	return 0;
+  // Cleanup
+  ImGui_ImplOpenGL3_Shutdown();
+  ImGui_ImplGlfw_Shutdown();
+  ImGui::DestroyContext();
+  glfwDestroyWindow(window);
+
+  glfwTerminate();
+  return 0;
 }

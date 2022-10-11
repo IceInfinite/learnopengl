@@ -5,19 +5,18 @@
 
 class VertexBufferLayout;
 
-class VertexArray
-{
-public:
-	VertexArray();
-	~VertexArray();
+class VertexArray {
+ public:
+  VertexArray();
+  ~VertexArray();
 
-	void Bind() const;
-	void Unbind() const;
+  void Bind() const;
+  void Unbind() const;
 
-	void AddLayout(const VertexBuffer& vb, const VertexBufferLayout& layout);
+  void AddLayout(const VertexBuffer& vb, const VertexBufferLayout& layout);
 
-private:
-	unsigned int id_;
+ private:
+  unsigned int id_;
 };
 
-#endif // VERTEX_ARRAY_H_
+#endif  // VERTEX_ARRAY_H_
