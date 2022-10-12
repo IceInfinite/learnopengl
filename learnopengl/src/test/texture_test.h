@@ -29,11 +29,11 @@ class TextureTest : public Test {
   std::unique_ptr<IndexBuffer> ib_;
   std::unique_ptr<VertexBufferLayout> layout_;
   std::unique_ptr<Shader> shader_;
-  std::unique_ptr<Texture> texture0_;
+  std::unique_ptr<Texture> texture_[2];
 
   glm::mat4 proj_;
   glm::mat4 view_;
-  glm::mat4 model_;
+  glm::mat4 model_[2];
 
   glm::vec3 translation_a_;
   glm::vec3 translation_b_;

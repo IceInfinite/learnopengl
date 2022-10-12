@@ -16,6 +16,12 @@ class Shader {
 
   void SetUniform1i(const std::string& name, int v0);
   void SetUniform1f(const std::string& name, float v0);
+  void SetUniform1iv(const std::string& name,
+                     unsigned int count,
+                     const int* value);
+  void SetUniform1fv(const std::string& name,
+                     unsigned int count,
+                     const float* value);
 
   void SetUniform4f(const std::string& name,
                     float v0,
@@ -23,6 +29,10 @@ class Shader {
                     float v2,
                     float v3);
   void SetUniformMat4(const std::string& name, const glm::mat4& matrix);
+
+  void SetUniformMat4fv(const std::string& name,
+                        unsigned int count,
+                        const glm::mat4* matrix);
 
  private:
   struct ShaderSource {
