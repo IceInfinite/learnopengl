@@ -22,13 +22,13 @@ Renderer::Renderer() {}
 
 Renderer::~Renderer() {}
 
-void Renderer::Clear() const {
+void Renderer::Clear() {
   GLCall(glClear(GL_COLOR_BUFFER_BIT));
 }
 
 void Renderer::Draw(const VertexArray& va,
                     const IndexBuffer& ib,
-                    const Shader& shader) const {
+                    const Shader& shader) {
   va.Bind();
   ib.Bind();
   shader.Bind();

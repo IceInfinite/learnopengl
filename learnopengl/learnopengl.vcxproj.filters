@@ -63,6 +63,12 @@
     <ClCompile Include="src\test\clear_color_test.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\test\test.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test\texture_test.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\basic.shader" />
@@ -786,6 +792,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\test\clear_color_test.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\test\texture_test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

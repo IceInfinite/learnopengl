@@ -19,7 +19,7 @@ void ClearColorTest::OnRender() {
   GLCall(glClear(GL_COLOR_BUFFER_BIT));
 }
 
-void ClearColorTest::OnImguiRender() {
+void ClearColorTest::OnImGuiRender() {
   ImGui::ColorEdit4("color", clear_color);
 }
 

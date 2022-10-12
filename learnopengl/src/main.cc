@@ -12,10 +12,12 @@
 #include "renderer.h"
 #include "shader.h"
 #include "test/clear_color_test.h"
+#include "test/test.h"
 #include "texture.h"
 #include "vertex_array.h"
 #include "vertex_buffer.h"
 #include "vertex_buffer_layout.h"
+#include "test/texture_test.h"
 
 int main() {
   GLFWwindow* window;
@@ -55,20 +57,32 @@ int main() {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-    Renderer renderer;
-    test::ClearColorTest clear_color_test;
+    test::Test* current_test = nullptr;
+    test::TestMenu* test_menu = new test::TestMenu(current_test);
+    test_menu->RegisterTest<test::ClearColorTest>("Clear Color");
+    test_menu->RegisterTest<test::TextureTest>("Texture Test");
+    current_test = test_menu;
 
     while (!glfwWindowShouldClose(window)) {
-      renderer.Clear();
-      clear_color_test.OnUpdate(0.0f);
-      clear_color_test.OnRender();
+      Renderer::Clear();
+      GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
 
       // Start the Dear ImGui frame
       ImGui_ImplOpenGL3_NewFrame();
       ImGui_ImplGlfw_NewFrame();
       ImGui::NewFrame();
 
-      clear_color_test.OnImguiRender();
+      if (current_test) {
+        current_test->OnUpdate(0.0f);
+        current_test->OnRender();
+        ImGui::Begin("Test");
+        if (current_test != test_menu && ImGui::Button("<-")) {
+          delete current_test;
+          current_test = test_menu;
+        }
+        current_test->OnImGuiRender();
+        ImGui::End();
+      }
 
       // Rendering
       ImGui::Render();
@@ -81,6 +95,9 @@ int main() {
       glfwPollEvents();
     }
 
+    if (current_test != test_menu)
+      delete current_test;
+    delete test_menu;
   }  // Ensure class destruction before context is deleted, avoid getting error
      // by glGetError func
 

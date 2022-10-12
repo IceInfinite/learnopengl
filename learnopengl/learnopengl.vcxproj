@@ -144,6 +144,8 @@
     <ClCompile Include="src\renderer.cc" />
     <ClCompile Include="src\shader.cc" />
     <ClCompile Include="src\test\clear_color_test.cc" />
+    <ClCompile Include="src\test\test.cc" />
+    <ClCompile Include="src\test\texture_test.cc" />
     <ClCompile Include="src\texture.cc" />
     <ClCompile Include="src\third_party\imgui\imgui.cpp" />
     <ClCompile Include="src\third_party\imgui\imgui_demo.cpp" />
@@ -268,6 +270,7 @@
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\test\clear_color_test.h" />
     <ClInclude Include="src\test\test.h" />
+    <ClInclude Include="src\test\texture_test.h" />
     <ClInclude Include="src\texture.h" />
     <ClInclude Include="src\third_party\glm\core\func_common.hpp" />
     <ClInclude Include="src\third_party\glm\core\func_exponential.hpp" />

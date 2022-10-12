@@ -12,7 +12,7 @@ class ClearColorTest : public Test {
 
   void OnUpdate(float delta_time) override;
   void OnRender() override;
-  void OnImguiRender() override;
+  void OnImGuiRender() override;
 
  private:
   float clear_color[4];
